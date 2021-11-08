@@ -8,7 +8,11 @@ app.use(express.urlencoded({
 }))
 app.engine("handlebars", exphbs())
 app.set("view engine", "handlebars")
-const port = 3000
+const port = process.env.PORT || 3000
+
+function isAuthenticated(user,password){
+  return user == "admin" && password == "admin"
+}
 
 app.get("/", function(request,response) {
   response.render("index")
@@ -29,11 +33,32 @@ app.post("/contacto", function(request,response) {
   response.send("Enviado")
 })
 
+app.get("/login", function(request,response) {
+  response.render("login")
+})
+
+app.post("/login", function(request,response) {
+  const user = request.body.user
+  const password = request.body.password
+
+  if (isAuthenticated(user,password)){
+    response.redirect("/dashboard")
+  }else{
+    response.send("ERROR")
+  }
+})
+
+
+
+app.get("/:user", function(request,response) {
+  response.send(`Usuario ${request.params.user}`)
+})
+
 
 
 
 
 app.listen(port, function() {
-  console.log("Servidor iniciado")
+  console.log("Servidor iniciado en puerto " + port)
 })
 
