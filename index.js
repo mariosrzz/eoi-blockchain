@@ -34,7 +34,8 @@ app.post("/contacto", function(request,response) {
  // TODO: Recoger los datos que nos envian
   console.log(request.body.email)
   console.log(request.body.message)
-  response.send("Enviado")
+  response.render("contacto", {message: "Mensaje enviado!", 
+    message_error: false})
 })
 
 app.get("/login", function(request,response) {
@@ -48,12 +49,24 @@ app.post("/login", function(request,response) {
   if (isAuthenticated(user,password)){
     response.redirect("/dashboard")
   }else{
-    response.render("login", {message: "Usuario o password incorrecto"})
+    response.render("login", {
+      message: "Usuario o password incorrecto", 
+      message_error: true})
   }
 })
 
 app.get("/dashboard", function(request,response) {
   response.render("dashboard")
+})
+
+
+app.get("/about", function(request,response) {
+  response.render("about")
+})
+
+app.post("/about", function(request,response) {
+  response.render("about", {message: "Suscrito correctamente!", 
+    message_error: false})
 })
 
 app.get("/users/:user", function(request,response) {
