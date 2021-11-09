@@ -44,13 +44,15 @@ app.post("/login", function(request,response) {
   if (isAuthenticated(user,password)){
     response.redirect("/dashboard")
   }else{
-    response.send("ERROR")
+    response.render("login", {message: "Usuario o password incorrecto"})
   }
 })
 
+app.get("/dashboard", function(request,response) {
+  response.render("dashboard")
+})
 
-
-app.get("/:user", function(request,response) {
+app.get("/users/:user", function(request,response) {
   response.send(`Usuario ${request.params.user}`)
 })
 

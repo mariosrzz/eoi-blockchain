@@ -1,5 +1,9 @@
 <h1>Login</h1>
 
+{{# if message}}
+    <p>{{ message }}</p>
+{{/if}}
+
 <form method="POST" action="/login">
     <label>Usuario:</label>
     <input type="text" name="user" />
