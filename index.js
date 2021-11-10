@@ -75,6 +75,11 @@ app.get("/cards", function(request,response) {
     )
 })
 
+app.post("/cards", function(request,response) {
+  response.render("cards", {message: "Suscrito correctamente!", 
+    message_error: false})
+})
+
 
 app.get("/about", function(request,response) {
   response.render("about")
