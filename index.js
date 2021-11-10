@@ -2,6 +2,8 @@ const express = require("express")
 const exphbs = require("express-handlebars")
 const bodyParser = require("body-parser")
 
+const { Card, CardRepository } = require("./models/card")
+
 const app = express()
 app.use(express.urlencoded({
   extended: true
@@ -62,29 +64,7 @@ app.get("/dashboard", function(request,response) {
 app.get("/cards", function(request,response) {
   response.render(
     "cards",
-    {cards: [
-      {
-        id: 1,
-        name: "Carta 1",
-        description: "Blah Blah Blah",
-        avatar: "C:\Users\mario\OneDrive\Escritorio\primera_web\fotos\732613.svg",
-        price: 0.012
-      },
-      {
-        id: 2,
-        name: "Carta 2",
-        description: "Blah Blah",
-        avatar: "/fotos/732624.svg",
-        price: 0.23
-      },
-      {
-        id: 3,
-        name: "Carta 3",
-        description: "Blah",
-        avatar: "/fotos/733342.svg",
-        price: 0.004
-      }
-    ]}
+    {cards: new CardRepository().getCards()}
     )
 })
 
