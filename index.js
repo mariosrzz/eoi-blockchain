@@ -4,10 +4,18 @@ const bodyParser = require("body-parser")
 
 const { Card, CardRepository } = require("./models/card")
 
+const { DatabaseService } = require("./services/database")
+
 const app = express()
 app.use(express.urlencoded({
   extended: true
 }))
+
+const db = new DatabaseService()
+
+if (!db.exists()) {
+  db.init()
+}
 
 app.use(express.static(__dirname + '/public'))
 
