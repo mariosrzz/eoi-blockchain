@@ -63,8 +63,7 @@ app.get("/dashboard", function(request,response) {
 
 app.get("/cards", function(request,response) {
   response.render(
-    "cards",
-    {cards: new CardRepository().getCards()}
+    "cards", {cards: new CardRepository().getCards()}
     )
 })
 
