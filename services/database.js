@@ -49,6 +49,21 @@ class DatabaseService{
         const dbData = JSON.parse(fs.readFileSync(this.DB_FILE_PATH))
         return dbData[key]
     }
+
+
+    removeOne(key, instanceId) {
+
+    }
+
+    findOne(key, instanceId) {
+        const dbData = JSON.parse(fs.readFileSync(this.DB_FILE_PATH))
+        const dbDataKey = dbData[key]
+        for (let instance of dbDataKey){
+            if (instance.id === instanceId){
+                return instance
+            }
+        }
+    }
 }
 
 

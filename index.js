@@ -77,6 +77,21 @@ app.get("/cards", function(request,response) {
     )
 })
 
+app.get("/cards/:id", function(request, response) {
+  const card = db.findOne("cards", request.params.id)
+  response.render("card",{"card": card} )
+})
+
+
+app.get("/delete_card/:id", function(request,response) {
+  const instanceId = request.params.id
+  db.removeOne("cards", instanceId)
+  
+  response.redirect("/cards")
+})
+
+
+
 app.post("/cards", function(request,response) {
   const cardName = request.body.name
   const description = request.body.description
