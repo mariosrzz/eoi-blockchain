@@ -7,22 +7,24 @@ const { Card, CardRepository } = require("./models/card")
 const { DatabaseService } = require("./services/database")
 
 const app = express()
+const hbs = exphbs()
+
 app.use(express.urlencoded({
   extended: true
 }))
+
+app.use(express.static(__dirname + '/public'))
+
+
+app.engine("handlebars", hbs)
+app.set("view engine", "handlebars")
+const port = process.env.PORT || 3000
 
 const db = new DatabaseService()
 
 if (!db.exists()) {
   db.init()
 }
-
-app.use(express.static(__dirname + '/public'))
-
-
-app.engine("handlebars", exphbs())
-app.set("view engine", "handlebars")
-const port = process.env.PORT || 3000
 
 function isAuthenticated(user,password){
   return user == "admin" && password == "admin"
@@ -76,8 +78,17 @@ app.get("/cards", function(request,response) {
 })
 
 app.post("/cards", function(request,response) {
-  response.render("cards", {message: "Suscrito correctamente!", 
-    message_error: false})
+  const cardName = request.body.name
+  const description = request.body.description
+  const price = request.body.price
+
+  // crear la nueva carta
+  const newCard = new Card(cardName, description, price)
+
+  // Guardarla en la base de datos
+  db.storeOne("cards", newCard)
+
+  response.redirect("/cards")
 })
 
 

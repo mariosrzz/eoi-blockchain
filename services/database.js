@@ -14,15 +14,34 @@ class DatabaseService{
         return fs.existsSync(this.DB_FILE_PATH)
     }
 
+    storeOne(key, instance) {
+        const dbData = JSON.parse(fs.readFileSync(this.DB_FILE_PATH))
+        let newData = { ...dbData}
+
+        if (!(key in newData)) {
+            newData[key] = [instance]
+        } else {
+            newData[key].push(instance)
+        }
+
+        fs.writeFileSync(this.DB_FILE_PATH, JSON.stringify(newData))
+
+        return newData
+    }
+
+
+
     //Guarda los datos enla clave key
     store(key, data) {
         const dbData = JSON.parse(fs.readFileSync(this.DB_FILE_PATH))
         let newData = { ...dbData}
 
         newData[key] = data
-        const jsonData = JSON.stringify(newData)
+        
 
-        return fs.writeFileSync(this.DB_FILE_PATH, jsonData)
+        fs.writeFileSync(this.DB_FILE_PATH, JSON.stringify(newData))
+
+        return newData
     }
 
     //Toma los datos basado en esta clave

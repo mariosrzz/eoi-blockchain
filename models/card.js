@@ -1,5 +1,8 @@
-const { AvatarService } = require("../services/avatar.js")
-const { DatabaseService } = require("../services/database.js")
+const { v4: uuidv4 } = require('uuid')
+
+
+const { AvatarService } = require("../services/avatar")
+const { DatabaseService } = require("../services/database")
 
 
 class CardRepository{
@@ -16,10 +19,16 @@ class CardRepository{
 
 
 class Card {
-    constructor() {
-        console.log("Cargando card")
+    constructor(cardName, description, price) {
+        this.name = cardName
+        this.price = price
+        this.id = uuidv4()
+        this.description = description
+        this.avatar = new AvatarService().getAvatarFromName(this.id)
     }
 }
+
+
 
 module.exports = {
     Card, CardRepository
