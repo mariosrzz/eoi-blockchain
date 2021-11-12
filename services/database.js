@@ -52,19 +52,52 @@ class DatabaseService{
 
 
     removeOne(key, instanceId) {
+        const elementList = this.get(key)
+        const itemToRemove = elementList.findIndex(item => item.id === instanceId)
 
+        elementList.splice(itemToRemove, 1)
+
+        this.store(key, elementList)
+        /*
+        const dbData = JSON.parse(fs.readFileSync(this.DB_FILE_PATH))
+        let newData = { ...dbData}
+
+        let dbDataListByKey = newData[key]
+        
+        for (let i=0; i<dbDataListByKey.length; i++){
+            if (dbDataListByKey[i].id === instanceId){
+                dbDataListByKey.splice(i, 1)
+            }
+        }
+        
+        newData[key] = dbDataListByKey
+
+        fs.writeFileSync(this.DB_FILE_PATH, JSON.stringify(newData))
+        return dbDataListByKey
+        */
     }
 
     findOne(key, instanceId) {
+        const elementList = this.get(key)
+        return elementList.find(item => item.id === instanceId)
+
+        /*
         const dbData = JSON.parse(fs.readFileSync(this.DB_FILE_PATH))
-        const dbDataKey = dbData[key]
-        for (let instance of dbDataKey){
+        const dbDataListByKey = dbData[key]
+        for (let instance of dbDataListByKey){
             if (instance.id === instanceId){
                 return instance
             }
         }
+        */
     }
 }
+
+
+
+
+
+
 
 
 module.exports = {

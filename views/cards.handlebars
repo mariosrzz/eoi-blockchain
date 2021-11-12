@@ -20,18 +20,16 @@
                 <a href="/cards/{{ id }}" class="card-link">
                     <i class="bi bi-currency-dollar"></i>Buy {{ price }} ETH
                 </a>
-
-                <a href=""
-                     class="btn btn-danger float-end"
+                <a 
+                     class="btn btn-danger float-end delete-card-item"
+                     data-card-id="{{ id }}"
                      data-bs-toggle="modal"
-                     data-bs-target="#deleteCardModal"
-                >
+                     data-bs-target="#deleteCardModal">
                          <i class="bi bi-x-lg"></i>
                 </a>
             </div>
         </div>
     </div>
-
     {{/each}}
 </div>
 
@@ -50,13 +48,12 @@
                 <form method="POST" action="/cards">
                     <div class="mb-3">
                         <label class="form-label">Nombre de la carta</label>
-                        <input name="name" type="text" class="form-control"
-                            aria-describedby="cardHelp">
+                        <input name="name" type="text" class="form-control"  />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Descripcion</label>
-                        <input name="description" type="text" class="form-control /">
+                        <input name="description" type="text" class="form-control" />
                     </div>
 
                     <div class="mb-3">
@@ -91,7 +88,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <a href="/delete_card/{{ id}}" class="btn btn-danger">Eliminar</a>
+        <a href="/delete_card" id="delete-card-button" class="btn btn-danger">Eliminar</a>
       </div>
     </div>
   </div>

@@ -79,6 +79,12 @@ app.get("/cards", function(request,response) {
 
 app.get("/cards/:id", function(request, response) {
   const card = db.findOne("cards", request.params.id)
+
+  if (!card){
+    response.status(404).send()
+    return
+  }
+
   response.render("card",{"card": card} )
 })
 
@@ -97,13 +103,22 @@ app.post("/cards", function(request,response) {
   const description = request.body.description
   const price = request.body.price
 
-  // crear la nueva carta
+  if (cardName === "" || description === "" || price === ""){
+
+    response.status(400).render("cards", 
+      {cards: new CardRepository().getCards(), 
+      message: "Carta no creada. Tienes que completar todos los campos", 
+      message_error: true})
+
+  } else{
+      // crear la nueva carta
   const newCard = new Card(cardName, description, price)
 
   // Guardarla en la base de datos
   db.storeOne("cards", newCard)
 
   response.redirect("/cards")
+  }
 })
 
 
