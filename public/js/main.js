@@ -14,7 +14,27 @@ $("#create-card-button").click(function() {
 
 
 $('input[name="name"]').change(function() {
-    console.log("Cambio")
-    console.log($(this).val())
-    $("#create-card-button").prop("disabled",false)
+    const nameValue = $(this).val()
+    if (nameValue) {
+        $("#create-card-button").prop("disabled",false)
+    } else{
+        $("#create-card-button").prop("disabled", "disabled")
+    }
+})
+
+showNotification = function(message, isError = false) {
+    let notification = $('<div>').addClass("alert alert-success").prop("role", "alert")
+    notification.text(message)
+
+    if (isError) {
+        notification.removeClass("alert-success").addClass("alert-danger")
+    }
+    $("#notifications").empty().append(notification)
+}
+
+
+$(".card-item").click(function() {
+    const cardId = $(this).data("card-id")
+    const message = `Has cliclado la carta ${cardId}`
+    showNotification(message)
 })
