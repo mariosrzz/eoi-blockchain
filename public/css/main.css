@@ -9,3 +9,8 @@ a {
 .card {
     margin-top: 20px;
 }
+
+.card-detail-img {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
