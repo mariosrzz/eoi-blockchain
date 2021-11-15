@@ -1,6 +1,7 @@
 const express = require("express")
 const exphbs = require("express-handlebars")
 const bodyParser = require("body-parser")
+const morgan = require("morgan")
 
 const { Card, CardRepository } = require("./models/card")
 
@@ -13,6 +14,8 @@ app.use(express.urlencoded({
   extended: true
 }))
 
+
+app.use(morgan("dev"))
 app.use(express.static(__dirname + '/public'))
 
 
