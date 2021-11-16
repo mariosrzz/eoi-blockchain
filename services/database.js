@@ -15,6 +15,13 @@ class DatabaseService{
     }
 
 
+    search(key, property, query) {
+        const resourceList = this.get(key)
+        return resourceList.filter(
+            resource => resource[property].toLowerCase().includes(query))
+    }
+
+
     updateOne(key, instance) {
         let resourceList = this.get(key)
 
@@ -106,12 +113,6 @@ class DatabaseService{
         */
     }
 }
-
-
-
-
-
-
 
 
 module.exports = {

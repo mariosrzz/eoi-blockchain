@@ -240,6 +240,17 @@ app.delete("/api/v1/cards/:id", function (request, response) {
 
 
 
+app.post("/search", function (request, response) {
+  //Buscar en cards por nombre
+  cards = db.search("cards", "name", request.body.query)
+  //devolver los resultados
+  //Hacer un render con las cartas elegidas
+
+  response.render("cards", {cards: cards})
+
+
+})
+
 
 
 app.listen(port, function() {
