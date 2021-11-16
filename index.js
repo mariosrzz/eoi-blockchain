@@ -77,10 +77,20 @@ app.get("/dashboard", function(request,response) {
 })
 
 app.get("/cards", function(request,response) {
+  console.log(request.query.text)
+  const query = request.query.text
+  let cards
+
+  if(query) {
+    cards = db.search("cards", "name", query)
+  } else {
+      cards = db.get("cards")
+  }
   response.render(
-    "cards", {cards: new CardRepository().getCards()}
+    "cards", {cards: cards, query: query}
     )
 })
+
 
 app.get("/cards/:id", function(request, response) {
   const card = db.findOne("cards", request.params.id)
@@ -95,6 +105,8 @@ app.get("/cards/:id", function(request, response) {
 
 
 app.get("/delete_card/:id", function(request,response) {
+
+  
   const instanceId = request.params.id
   db.removeOne("cards", instanceId)
   
@@ -238,18 +250,6 @@ app.delete("/api/v1/cards/:id", function (request, response) {
 })
 
 
-
-
-app.post("/search", function (request, response) {
-  //Buscar en cards por nombre
-  cards = db.search("cards", "name", request.body.query)
-  //devolver los resultados
-  //Hacer un render con las cartas elegidas
-
-  response.render("cards", {cards: cards})
-
-
-})
 
 
 

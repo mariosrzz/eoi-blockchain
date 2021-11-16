@@ -2,6 +2,11 @@
 
 <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCardModal">Crea tu carta</a>
 
+{{#if query}}
+    <div class="row">
+        Hay {{ cards.length }} resultados para la consulta "{{ query }}"
+    </div>
+{{/if}}
 
 <div class="row">
     {{#each cards}}

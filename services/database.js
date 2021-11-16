@@ -18,7 +18,7 @@ class DatabaseService{
     search(key, property, query) {
         const resourceList = this.get(key)
         return resourceList.filter(
-            resource => resource[property].toLowerCase().includes(query))
+            resource => resource[property].toLowerCase().includes(query.toLowerCase()))
     }
 
 
