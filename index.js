@@ -1,6 +1,7 @@
 const express = require("express")
 const exphbs = require("express-handlebars")
 const morgan = require("morgan")
+const _ = require("lodash")
 
 const { Card, CardRepository } = require("./models/card")
 
@@ -157,9 +158,6 @@ app.post("/api/v1/cards/", function (request, response) {
    return
  } 
  
- 
- 
- 
   const card = new Card(
     request.body.name,
     request.body.description,
@@ -172,30 +170,70 @@ app.post("/api/v1/cards/", function (request, response) {
 
 //Muestra una carta
 app.get("/api/v1/cards/:id", function (request, response) {
+  const card = db.findOne("cards", request.params.id)
 
-  
+  if(!card) {
+    response.status(404).send(
+      {"error": 404, "message": "No existe el recurso 404"}
+    )
+    return
+  }
+
+  response.send(card)
 })
-
-
-//
-app.post("/api/v1/cards/:id", function (request, response) {
-
-  
-})
-
 
 
 //Edita una carta
 app.put("/api/v1/cards/:id", function (request, response) {
+  const card = db.findOne("cards", request.params.id)
 
-  
+
+  //Solo se puede editar name, price y description
+  // SI me llega uno de estos valores dejo editar
+  // si no me llega esto o mr llega otro un 400
+  if(!card) {
+    response.status(404).send(
+      {"error": 404, "message": "No existe el recurso 404"}
+    )
+    return
+  }
+
+  const cardRequest = _.pick(request.body,["name", "price", "description"])
+
+  if (_.isEmpty(cardRequest)){
+    response.status(400).send(
+      {
+        "error" :400,
+        "message": "No has rellenado alguno de los datos obligatorios"
+      }
+    )
+    return
+  } 
+
+  const cardEdited = { ...card, ...cardRequest}
+  db.updateOne("cards", cardEdited)
+
+
+  response.send(cardEdited)
+
 })
 
 
 
 //Borra una carta
 app.delete("/api/v1/cards/:id", function (request, response) {
+  const instanceId = request.params.id
 
+  if(!db.findOne("cards", instanceId)) {
+    response.status(404).send(
+      {"error": 404, "message": "No existe el recurso 404"}
+    )
+    return
+  }
+
+  db.removeOne("cards", instanceId)
+  
+  response.status(204).send()
   
 })
 

@@ -14,6 +14,20 @@ class DatabaseService{
         return fs.existsSync(this.DB_FILE_PATH)
     }
 
+
+    updateOne(key, instance) {
+        let resourceList = this.get(key)
+
+        const itemToEditIndex = resourceList.findIndex(
+            item => item.id === instance.id
+        )
+
+        resourceList[itemToEditIndex] = instance
+        this.store(key, resourceList)
+
+    }
+
+
     storeOne(key, instance) {
         const dbData = JSON.parse(fs.readFileSync(this.DB_FILE_PATH))
         let newData = { ...dbData}
