@@ -1,6 +1,5 @@
 const express = require("express")
 const exphbs = require("express-handlebars")
-const bodyParser = require("body-parser")
 const morgan = require("morgan")
 
 const { Card, CardRepository } = require("./models/card")
@@ -14,7 +13,7 @@ app.use(express.urlencoded({
   extended: true
 }))
 
-
+app.use(express.json())
 app.use(morgan("dev"))
 app.use(express.static(__dirname + '/public'))
 
@@ -33,13 +32,15 @@ function isAuthenticated(user,password){
   return user == "admin" && password == "admin"
 }
 
+function checkValidCardValues (body) {
+  return body.name && body.description && body.price
+}
+
+
 app.get("/", function(request,response) {
   response.render("index")
 })
 
-app.get("/hola", function(request,response) {
-  response.render("hola")
-})
 
 app.get("/contacto", function(request,response) {
   response.render("contacto")
@@ -106,7 +107,7 @@ app.post("/cards", function(request,response) {
   const description = request.body.description
   const price = request.body.price
 
-  if (cardName === "" || description === "" || price === ""){
+  if (!checkValidCardValues(request.body)){
 
     response.status(400).render("cards", 
       {cards: new CardRepository().getCards(), 
@@ -134,9 +135,70 @@ app.post("/about", function(request,response) {
     message_error: false})
 })
 
-app.get("/users/:user", function(request,response) {
-  response.send(`Usuario ${request.params.user}`)
+
+
+//Listar recursos (cartas)
+
+app.get("/api/v1/cards", function (request, response) {
+  const cards = new CardRepository().getCards()
+  response.send(cards)
 })
+
+//Crear una carta
+app.post("/api/v1/cards/", function (request, response) {
+
+ if (!checkValidCardValues(request.body)){
+   response.status(400).send(
+     {
+       "error" :400,
+       "message": "No has introducido todos los valores"
+     }
+   )
+   return
+ } 
+ 
+ 
+ 
+ 
+  const card = new Card(
+    request.body.name,
+    request.body.description,
+    request.body.price)
+  db.storeOne("cards", card)
+
+  response.status(201).send(card)
+})
+
+
+//Muestra una carta
+app.get("/api/v1/cards/:id", function (request, response) {
+
+  
+})
+
+
+//
+app.post("/api/v1/cards/:id", function (request, response) {
+
+  
+})
+
+
+
+//Edita una carta
+app.put("/api/v1/cards/:id", function (request, response) {
+
+  
+})
+
+
+
+//Borra una carta
+app.delete("/api/v1/cards/:id", function (request, response) {
+
+  
+})
+
 
 
 
